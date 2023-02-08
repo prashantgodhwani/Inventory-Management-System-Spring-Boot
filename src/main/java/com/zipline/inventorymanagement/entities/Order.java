@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -18,9 +18,9 @@ import java.util.List;
 public class Order {
 
     @JsonProperty("order_id")
-    @Min(1)
     @NotNull
-    private long orderId;
+    @NotBlank
+    private String orderId;
 
     @JsonProperty("requested")
     @NotNull

@@ -15,9 +15,9 @@ import java.util.Optional;
 @Log4j2
 public class LocalInMemoryRepository implements InventoryAndCatalogRepository {
 
-    private Map<Integer, Product> catalog = new HashMap<>();
+    private Map<String, Product> catalog = new HashMap<>();
 
-    private Map<Integer, InventoryLineItem> inventory = new HashMap<>();
+    private Map<String, InventoryLineItem> inventory = new HashMap<>();
 
     @Override
     public void initCatalog(@RequestBody List<Product> productInfo) {
@@ -39,18 +39,18 @@ public class LocalInMemoryRepository implements InventoryAndCatalogRepository {
     }
 
     @Override
-    public Optional<Product> findInCatalogByProductId(int productId) {
+    public Optional<Product> findInCatalogByProductId(String productId) {
         return Optional.ofNullable(this.catalog.get(productId));
     }
 
     @Override
-    public Map<Integer, InventoryLineItem> getCurrentInventory() {
+    public Map<String, InventoryLineItem> getCurrentInventory() {
         return this.inventory;
     }
 
 
     @Override
-    public Optional<InventoryLineItem> findInInventoryByProductId(int productId) {
+    public Optional<InventoryLineItem> findInInventoryByProductId(String productId) {
         return Optional.ofNullable(this.inventory.get(productId));
     }
 

@@ -26,6 +26,6 @@ public class Product {
 
     @JsonProperty("product_id")
     @NotNull
-    @Min(0)
-    private int productId;
+    @NotBlank
+    private String productId;
 }

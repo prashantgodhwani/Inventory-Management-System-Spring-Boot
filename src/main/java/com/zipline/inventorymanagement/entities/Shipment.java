@@ -14,9 +14,9 @@ import java.util.List;
 public class Shipment {
 
     @NotBlank
-    @Min(1)
     @NotNull
-    private long orderId;
+    @NotBlank
+    private String orderId;
 
     @NotNull
     private List<ShippedItem> shippedItems;

@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -24,6 +25,6 @@ public class InventoryLineItem {
 
     @JsonProperty("product_id")
     @NotNull
-    @Min(0)
-    private int productId;
+    @NotBlank
+    private String productId;
 }

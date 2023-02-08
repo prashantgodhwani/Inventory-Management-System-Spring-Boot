@@ -48,7 +48,7 @@ public class InventoryManagementController {
 
             while (iterator.hasNext()) {
                 Requested item = iterator.next();
-                int productId = item.getProductId();
+                String productId = item.getProductId();
 
                 //check if the product requested is in the inventory
                 Optional<Product> product = inventoryAndCatalogRepository.findInCatalogByProductId(productId);
@@ -135,7 +135,7 @@ public class InventoryManagementController {
     @GetMapping("/get_inventory")
     @ResponseBody
     @Traceable
-    public Map<Integer, InventoryLineItem> getInventory(){
+    public Map<String, InventoryLineItem> getInventory(){
         return this.inventoryAndCatalogRepository.getCurrentInventory();
     }
 }

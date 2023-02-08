@@ -16,11 +16,11 @@ public interface InventoryAndCatalogRepository {
 
     void initInventory(List<InventoryLineItem> inventoryInfo);
 
-    Optional<Product> findInCatalogByProductId(int productId);
+    Optional<Product> findInCatalogByProductId(String productId);
 
-    Map<Integer, InventoryLineItem> getCurrentInventory();
+    Map<String, InventoryLineItem> getCurrentInventory();
 
-    Optional<InventoryLineItem> findInInventoryByProductId(int productId);
+    Optional<InventoryLineItem> findInInventoryByProductId(String productId);
 
     void save(InventoryLineItem product);
 }
