@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /*
-  Inspired by Medium and stack-overflow articles
+  Inspired by Medium and stack-overflow article -
   https://medium.com/nerd-for-tech/logging-made-easy-30bd10effa65
  */
 @Aspect

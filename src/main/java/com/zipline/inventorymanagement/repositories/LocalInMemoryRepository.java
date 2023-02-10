@@ -48,7 +48,6 @@ public class LocalInMemoryRepository implements InventoryAndCatalogRepository {
         return this.inventory;
     }
 
-
     @Override
     public Optional<InventoryLineItem> findInInventoryByProductId(String productId) {
         return Optional.ofNullable(this.inventory.get(productId));
