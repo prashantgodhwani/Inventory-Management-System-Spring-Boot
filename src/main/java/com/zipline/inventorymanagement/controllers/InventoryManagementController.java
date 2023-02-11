@@ -35,13 +35,14 @@ public class InventoryManagementController {
 
     @PostMapping("/process_order")
     @Traceable
-    public void processOrder(@Valid @RequestBody Order order){
+    public List<Shipment> processOrder(@Valid @RequestBody Order order){
         //Get the list of all the requested products
         List<Requested> requestedProducts = order.getRequested();
+        List<Shipment> shipmentsForOrder = new ArrayList<>();
 
         while (!requestedProducts.isEmpty()) {
             //initialize the shipment cart, and set the shipmentWeight to 0
-            List<ShippedItem> shipment = new ArrayList<>();
+            List<ShippedItem> shippedItems = new ArrayList<>();
             int shipmentMass = 0;
 
             Iterator<Requested> iterator = requestedProducts.iterator();
@@ -75,7 +76,7 @@ public class InventoryManagementController {
                     //check if the entire quantity can be sent in one shipment (<= 1800 GMS)
                     if (shipmentMass + (productMass * quantity) <= MAX_WEIGHT_IN_GMS) {
                         log.info("Entire Requested quantity of product : " + productId + " can be shipped in current shipment.");
-                        shipment.add(ShippedItem.builder().productId(productId).quantity(quantity).build());
+                        shippedItems.add(ShippedItem.builder().productId(productId).quantity(quantity).build());
                         shipmentMass += productMass * quantity;
 
                         //update remaining quantity in inventory
@@ -101,7 +102,7 @@ public class InventoryManagementController {
                                 "be fulfilled in current shipment : " + shippedQuantity);
 
                         if(shippedQuantity != 0) {
-                            shipment.add(ShippedItem.builder().productId(productId).quantity(shippedQuantity).build());
+                            shippedItems.add(ShippedItem.builder().productId(productId).quantity(shippedQuantity).build());
                             inventoryAndCatalogRepository.save(InventoryLineItem.builder()
                                     .productId(productId)
                                     .quantity(inventoryLineItem.get().getQuantity() - shippedQuantity)
@@ -117,12 +118,15 @@ public class InventoryManagementController {
             }
 
             //assign zip and ship the package
-            if(!shipment.isEmpty()) {
+            if(!shippedItems.isEmpty()) {
                 log.info("Shipping item(s) with order_id " + order.getOrderId());
-                shipPackage(Shipment.builder().orderId(order.getOrderId()).shippedItems(shipment).build());
+                Shipment shipment = Shipment.builder().orderId(order.getOrderId()).shippedItems(shippedItems).build();
+                shipmentsForOrder.add(shipment);
+                shipPackage(shipment);
             }
-
         }
+
+        return shipmentsForOrder;
     }
 
     @GetMapping("/ship_package")

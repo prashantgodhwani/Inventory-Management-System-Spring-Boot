@@ -24,6 +24,7 @@ public class LocalInMemoryRepository implements InventoryAndCatalogRepository {
         for (Product product : productInfo) {
             log.info("Adding to catalog " + product);
             catalog.put(product.getProductId(), product);
+            inventory.put(product.getProductId(), new InventoryLineItem(0, product.getProductId()));
         }
     }
 
