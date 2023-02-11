@@ -112,4 +112,25 @@ class InventoryManagementApplicationTests {
 		assertEquals(2, shipmentList.size());
 	}
 
+	@Test
+	public void testProcessOrder_InventoryAfterOrder_MultipleProduct_Success() {
+		controller.initCatalog(productInfoList);
+		controller.initInventory(List.of( new InventoryLineItem(10, "2"), new InventoryLineItem(10, "3")
+				, new InventoryLineItem(10, "1")));
+		List<Requested> requested = new ArrayList<>();
+		requested.add(new Requested(2, "2"));
+		requested.add(new Requested(3, "1"));
+		requested.add(new Requested(1, "3"));
+		requested.add(new Requested(1, "120"));
+
+		Order order = new Order("123", requested);
+
+		controller.processOrder(order);
+		Map<String, InventoryLineItem> actualInventory = controller.getInventory();
+
+		assertEquals(8, actualInventory.get("2").getQuantity());
+		assertEquals(0, actualInventory.get("120").getQuantity());
+		assertEquals(9, actualInventory.get("3").getQuantity());
+	}
+
 }
